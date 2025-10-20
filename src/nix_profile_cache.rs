@@ -1,7 +1,7 @@
 use std::{
     ffi::OsStr,
     fs,
-    io::Write,
+    io::{self, Write},
     path::{Path, PathBuf},
     process,
     time::SystemTime,
@@ -153,7 +153,12 @@ fn hash_flake_reference(flake_reference: &str) -> anyhow::Result<String> {
 }
 
 fn clean_old_gcroots(cache_dir: &Path, flake_inputs_dir: &Path) -> anyhow::Result<()> {
-    fs::remove_dir_all(cache_dir)?;
+    let res = fs::remove_dir_all(cache_dir);
+    if let Err(e) = &res
+        && e.kind() != io::ErrorKind::NotFound
+    {
+        res?;
+    }
     fs::create_dir_all(flake_inputs_dir)?;
     Ok(())
 }
