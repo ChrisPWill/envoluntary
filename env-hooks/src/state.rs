@@ -96,21 +96,11 @@ impl NoRcsState {
     pub fn get_env_state_var(
         self,
         env_state_var_key: impl AsRef<OsStr>,
-    ) -> ReadyForFullResetOrDone {
-        if let Some(env_state_var_value) = get_env_state_var(env_state_var_key) {
-            ReadyForFullResetOrDone::ReadyForFullReset(ReadyForFullResetState {
-                env_state_var_value,
-            })
-        } else {
-            ReadyForFullResetOrDone::Done
-        }
+    ) -> Option<ReadyForFullResetState> {
+        get_env_state_var(env_state_var_key).map(|env_state_var_value| ReadyForFullResetState {
+            env_state_var_value,
+        })
     }
-}
-
-#[derive(Debug, Clone)]
-pub enum ReadyForFullResetOrDone {
-    Done,
-    ReadyForFullReset(ReadyForFullResetState),
 }
 
 #[derive(Debug, Clone)]

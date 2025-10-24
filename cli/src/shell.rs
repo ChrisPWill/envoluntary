@@ -9,7 +9,7 @@ use env_hooks::{
     BashSource, EnvVars, EnvVarsState, env_vars_state_from_env_vars, get_env_vars_from_bash,
     get_env_vars_from_current_process, get_env_vars_reset, get_old_env_vars_to_be_updated,
     merge_delimited_env_var, shells,
-    state::{self, GetEnvStateVar, MatchRcs, ReadyForFullResetOrDone},
+    state::{self, GetEnvStateVar, MatchRcs},
 };
 use nix_dev_env::{NixProfileCache, check_nix_version};
 use once_cell::sync::Lazy;
@@ -77,21 +77,15 @@ pub fn print_export(args: EnvoluntaryShellExportArgs) -> anyhow::Result<()> {
 
     match match_rcs {
         MatchRcs::NoRcs(no_rcs_state) => {
-            let ready_for_full_reset_or_done =
-                no_rcs_state.get_env_state_var(ENVOLUNTARY_ENV_STATE_VAR_KEY);
-            match ready_for_full_reset_or_done {
-                ReadyForFullResetOrDone::ReadyForFullReset(ready_for_full_reset_state) => {
-                    ready_for_full_reset_state.reset_env_vars(|env_state_var_value| {
-                        let env_state =
-                            EnvoluntaryEnvState::decode(env_state_var_value.as_bytes())?;
-                        print_shell_export(args.shell, env_state.env_vars_reset);
-                        Ok(())
-                    })?
-                }
-                ReadyForFullResetOrDone::Done => {
-                    // 🤫 nothing to do
-                }
-            };
+            if let Some(ready_for_full_reset_state) =
+                no_rcs_state.get_env_state_var(ENVOLUNTARY_ENV_STATE_VAR_KEY)
+            {
+                ready_for_full_reset_state.reset_env_vars(|env_state_var_value| {
+                    let env_state = EnvoluntaryEnvState::decode(env_state_var_value.as_bytes())?;
+                    print_shell_export(args.shell, env_state.env_vars_reset);
+                    Ok(())
+                })?;
+            }
         }
         MatchRcs::Rcs(rcs_state) => {
             let get_env_state_var = rcs_state.get_env_state_var(ENVOLUNTARY_ENV_STATE_VAR_KEY);
