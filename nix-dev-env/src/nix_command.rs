@@ -4,6 +4,9 @@ use std::{
     process::{Command, ExitStatus, Stdio},
 };
 
+use bstr::BString;
+use shell_quote::Sh;
+
 pub(crate) trait SimplifiedExitOk {
     fn simplified_exit_ok(&self) -> anyhow::Result<()>;
 }
@@ -40,18 +43,14 @@ pub(crate) fn nix_program(
     output.status.simplified_exit_ok().map_err(|err| {
         anyhow::format_err!(
             "`{} {}` failed with error:\n{}",
-            command.get_program().to_string_lossy(),
-            command
-                .get_args()
-                .map(|arg| {
-                    let mut arg = arg.to_string_lossy().to_string();
-                    if arg.contains(' ') {
-                        arg = format!(r#""{}""#, arg);
-                    }
-                    arg
-                })
-                .collect::<Vec<_>>()
-                .join(" "),
+            BString::new(Sh::quote_vec(command.get_program())),
+            BString::new(bstr::join(
+                " ",
+                command
+                    .get_args()
+                    .map(|arg| { BString::new(Sh::quote_vec(arg)) })
+                    .collect::<Vec<_>>()
+            )),
             err
         )
     })?;
