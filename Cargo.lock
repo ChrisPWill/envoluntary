@@ -320,6 +320,7 @@ dependencies = [
  "bstr",
  "duct",
  "indexmap",
+ "once_cell",
  "shell-quote",
  "tempfile",
 ]

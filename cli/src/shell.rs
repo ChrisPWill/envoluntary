@@ -5,6 +5,7 @@ use std::{collections::BTreeMap, io::Read, os::unix::ffi::OsStrExt, path::PathBu
 
 use base64::{Engine, prelude::BASE64_STANDARD};
 use bstr::B;
+use env_hooks::remove_ignored_env_vars;
 use env_hooks::{
     BashSource, EnvVars, EnvVarsState, env_vars_state_from_env_vars, get_env_vars_from_bash,
     get_env_vars_from_current_process, get_env_vars_reset, get_old_env_vars_to_be_updated,
@@ -43,7 +44,10 @@ pub fn print_hook(shell: EnvoluntaryShell) -> anyhow::Result<()> {
                     "envoluntary",
                     bstr::join(
                         " ",
-                        [&Fish::quote_vec(&env::current_exe()?), B("shell export fish")]
+                        [
+                            &Fish::quote_vec(&env::current_exe()?),
+                            B("shell export fish")
+                        ]
                     )
                 )
             );
@@ -255,9 +259,11 @@ fn get_new_env_vars(cache_profile: &NixProfileCache) -> anyhow::Result<EnvVarUpd
         BashSource::File(PathBuf::from(cache_profile.profile_rc())),
         Some(bash_env_vars),
     )?;
+    remove_ignored_env_vars(&mut new_env_vars);
 
     let old_env_vars_to_be_updated = {
-        let old_env_vars = get_env_vars_from_current_process();
+        let mut old_env_vars = get_env_vars_from_current_process();
+        remove_ignored_env_vars(&mut old_env_vars);
         get_old_env_vars_to_be_updated(old_env_vars, &new_env_vars)
     };
 

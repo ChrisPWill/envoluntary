@@ -11,6 +11,7 @@ use std::{
 use bstr::{B, BString, ByteSlice};
 use duct::cmd;
 use indexmap::IndexSet;
+use once_cell::sync::Lazy;
 use shell_quote::Bash;
 
 pub type EnvVars = BTreeMap<String, String>;
@@ -163,4 +164,43 @@ pub fn merge_delimited_values(
         .into_iter()
         .collect::<Vec<_>>()
         .join(&join_delimiter.to_string())
+}
+
+const IGNORED_ENV_VAR_PREFIXES: &[&str] = &["__fish", "BASH_FUNC_"];
+
+static IGNORED_ENV_VAR_KEYS: Lazy<HashSet<&str>> = Lazy::new(|| {
+    HashSet::from([
+        // direnv env config
+        "DIRENV_CONFIG",
+        "DIRENV_BASH",
+        // should only be available inside of the .envrc or .env
+        "DIRENV_IN_ENVRC",
+        "COMP_WORDBREAKS", // Avoids segfaults in bash
+        "PS1",             // PS1 should not be exported, fixes problem in bash
+        // variables that should change freely
+        "OLDPWD",
+        "PWD",
+        "SHELL",
+        "SHELLOPTS",
+        "SHLVL",
+        "_",
+    ])
+});
+
+pub fn ignored_env_var_key(env_var_key: &str) -> bool {
+    for ignored_env_var_prefix in IGNORED_ENV_VAR_PREFIXES {
+        if env_var_key.starts_with(ignored_env_var_prefix) {
+            return true;
+        }
+    }
+    IGNORED_ENV_VAR_KEYS.contains(env_var_key)
+}
+
+pub fn remove_ignored_env_vars(env_vars: &mut EnvVars) {
+    let env_var_keys = env_vars.keys().cloned().collect::<Vec<_>>();
+    env_var_keys.into_iter().for_each(|env_var_key| {
+        if ignored_env_var_key(&env_var_key) {
+            env_vars.remove(&env_var_key);
+        }
+    });
 }
