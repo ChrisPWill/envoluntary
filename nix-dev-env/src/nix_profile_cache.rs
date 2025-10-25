@@ -78,6 +78,7 @@ impl NixProfileCache {
 
         let stdout_content = nix_command::nix([
             OsStr::new("print-dev-env"),
+            OsStr::new("--no-write-lock-file"),
             OsStr::new("--profile"),
             tmp_profile.as_os_str(),
             OsStr::new(&self.flake_reference.flake_reference_string),
