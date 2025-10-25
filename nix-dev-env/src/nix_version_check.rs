@@ -67,7 +67,7 @@ mod tests {
                 .unwrap_err()
                 .to_string(),
             format!(
-                "`{} --extra-experimental-features \"nix-command flakes\" --version` failed with error:\nprocess exited unsuccessfully: exit status: 1",
+                "`{} --extra-experimental-features nix-command' flakes' --version` failed with error:\nprocess exited unsuccessfully: exit status: 1",
                 nix_executable.path().to_string_lossy()
             )
         );
