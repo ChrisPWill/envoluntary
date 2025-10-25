@@ -2,6 +2,8 @@
 name = "env-hooks"
 version = "0.1.0"
 edition = "2024"
+description = "Shell integration for automatic environment management"
+license = "MIT"
 
 [dependencies]
 anyhow.workspace = true

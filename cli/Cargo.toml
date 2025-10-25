@@ -2,6 +2,8 @@
 name = "envoluntary"
 version = "0.1.0"
 edition = "2024"
+description = "Automatic Nix development environments for your shell"
+license = "MIT"
 
 [dependencies]
 anyhow.workspace = true
