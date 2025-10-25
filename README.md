@@ -10,6 +10,14 @@ This bridges the gap between installing packages declaratively via NixOS /
 home-manager and defining them for each project being worked in via `flake.nix`
 / direnv / nix-direnv. Especially useful when projects don't use Nix!
 
+```mermaid
+graph TD
+    A["🌍 System-Wide Approach<br/>(NixOS/home-manager)"] -->|Pro: Centralized<br/>Con: Loses project specificity| B["Management Challenge"]
+    C["📁 Per-Project Approach<br/>(flake.nix/direnv)"] -->|Pro: Project-specific<br/>Con: Setup burden| B
+    B -->|Envoluntary Solution| D["✨ Pattern-Based Centralized<br/>(Best of both worlds)"]
+    D --> E["✅ Centralized config<br/>✅ Project-aware<br/>✅ No per-project setup<br/>✅ Works for non-Nix projects"]
+```
+
 ## Features
 
 - **Pattern-based matching**: Define directory patterns once in your config, get
