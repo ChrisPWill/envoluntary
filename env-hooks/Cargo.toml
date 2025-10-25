@@ -4,6 +4,11 @@ version = "0.1.0"
 edition = "2024"
 description = "Shell integration for automatic environment management"
 license = "MIT"
+repository = "https://github.com/dfrankland/envoluntary"
+documentation = "https://docs.rs/env-hooks"
+readme = "README.md"
+categories = ["command-line-interface", "config", "development-tools", "caching", "template-engine"]
+keywords = ["shell", "hooks", "environment", "direnv", "nix"]
 
 [dependencies]
 anyhow.workspace = true

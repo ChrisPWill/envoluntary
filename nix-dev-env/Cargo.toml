@@ -4,6 +4,11 @@ version = "0.1.0"
 edition = "2024"
 description = "Nix development environment management and caching"
 license = "MIT"
+repository = "https://github.com/dfrankland/envoluntary"
+documentation = "https://docs.rs/nix-dev-env"
+readme = "README.md"
+categories = ["command-line-interface", "config", "development-tools", "caching"]
+keywords = ["nix", "flake", "development", "caching", "environment"]
 
 [dependencies]
 anyhow.workspace = true

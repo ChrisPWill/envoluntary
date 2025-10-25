@@ -4,6 +4,11 @@ version = "0.1.0"
 edition = "2024"
 description = "Automatic Nix development environments for your shell"
 license = "MIT"
+repository = "https://github.com/dfrankland/envoluntary"
+documentation = "https://docs.rs/envoluntary"
+readme = "README.md"
+categories = ["command-line-utilities", "development-tools", "config"]
+keywords = ["nix", "shell", "environment", "hooks", "development"]
 
 [dependencies]
 anyhow.workspace = true
