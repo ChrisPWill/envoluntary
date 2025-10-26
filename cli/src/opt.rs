@@ -93,7 +93,7 @@ pub struct EnvoluntaryConfigAddEntryArgs {
     ///
     /// This can be a local flake path (e.g., `./flake.nix`),
     /// or a remote flake reference (e.g., `github:owner/repo`).
-    /// See: https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake#flake-references
+    /// See: <https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake#flake-references>
     pub flake_reference: String,
 
     /// Path to the configuration file (overrides default location).
@@ -178,7 +178,7 @@ pub struct EnvoluntaryShellExportArgs {
     ///
     /// If provided, these flake references will be used instead of matching against
     /// the configuration file patterns. Useful for testing or temporary overrides.
-    /// See: https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake#flake-references
+    /// See: <https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake#flake-references>
     #[arg(long)]
     pub flake_references: Option<Vec<String>>,
 
@@ -202,7 +202,7 @@ pub struct EnvoluntaryShellExportArgs {
 pub struct EnvoluntaryShellPrintCachePathArgs {
     /// The Nix flake reference to get the cache path for.
     ///
-    /// See: https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake#flake-references
+    /// See: <https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake#flake-references>
     #[arg(long)]
     pub flake_reference: String,
 
