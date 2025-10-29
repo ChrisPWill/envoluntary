@@ -1,8 +1,5 @@
 [devshell]
-packages = [
-  "alejandra",
-  "cargo-release",
-]
+packages = ["alejandra", "cargo-release"]
 
 [[commands]]
 name = "build-all"
@@ -40,7 +37,7 @@ command = """\
   cargo fmt --check; \
   cargo clippy; \
   cargo doc; \
-  taplo check Cargo.toml "*/Cargo.toml"; \
+  taplo check devshell.toml Cargo.toml "*/Cargo.toml"; \
 """
 
 [[commands]]
@@ -51,5 +48,5 @@ command = """\
   alejandra .; \
   cargo clippy --fix --allow-dirty; \
   cargo fmt; \
-  taplo fmt Cargo.toml "*/Cargo.toml"; \
+  taplo fmt devshell.toml Cargo.toml "*/Cargo.toml"; \
 """
