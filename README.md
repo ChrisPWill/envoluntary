@@ -54,7 +54,7 @@ graph TD
    Or use via Nix shell
 
    ```bash
-      # Bash/Zsh
+   # Bash/Zsh
    eval "$(nix shell github:dfrankland/envoluntary -c envoluntary shell hook bash)"  # or zsh
 
    # Fish
