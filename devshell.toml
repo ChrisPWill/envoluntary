@@ -1,5 +1,17 @@
 [devshell]
-packages = ["alejandra", "cargo-release", "miniserve"]
+packages = ["alejandra", "cargo-release", "gcc", "miniserve"]
+
+[[commands]]
+name = "run-export"
+category = "running"
+help = "Test 'envoluntary shell export <shell>'"
+command = "cargo run -- shell export $1"
+
+[[commands]]
+name = "run-hook"
+category = "running"
+help = "Test 'envoluntary shell hook <shell>'"
+command = "cargo run -- shell hook $1"
 
 [[commands]]
 name = "build-all"
